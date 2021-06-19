@@ -1,9 +1,14 @@
 package engine
 
 type RouterGroup struct {
-	prefix string
-	parent *RouterGroup
-	engine *Engine
+	prefix      string
+	parent      *RouterGroup
+	engine      *Engine
+	middlewares []HandlerFunc
+}
+
+func (group *RouterGroup) Use(middlewares ...HandlerFunc) {
+	group.middlewares = append(group.middlewares, middlewares...)
 }
 
 func (group *RouterGroup) Group(prefix string) *RouterGroup {
@@ -12,6 +17,7 @@ func (group *RouterGroup) Group(prefix string) *RouterGroup {
 		parent: group,
 		engine: group.engine,
 	}
+	group.engine.groups = append(group.engine.groups, newGroup)
 
 	return newGroup
 }

@@ -4,10 +4,13 @@ import (
 	"net/http"
 
 	"github.com/ijunyu/gee/engine"
+	"github.com/ijunyu/gee/middleware"
 )
 
 func main() {
 	r := engine.New()
+	r.Use(middleware.Logger())
+
 	r.GET("/", func(c *engine.Context) {
 		c.String(http.StatusOK, "welcome")
 	})
