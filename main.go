@@ -4,12 +4,10 @@ import (
 	"net/http"
 
 	"github.com/ijunyu/gee/engine"
-	"github.com/ijunyu/gee/middleware"
 )
 
 func main() {
-	r := engine.New()
-	r.Use(middleware.Logger())
+	r := engine.Default()
 
 	r.GET("/", func(c *engine.Context) {
 		c.String(http.StatusOK, "welcome")
@@ -32,6 +30,11 @@ func main() {
 			c.JSON(http.StatusOK, engine.H{"filepath": c.Param("filepath")})
 		})
 	}
+
+	r.GET("/panic", func(c *engine.Context) {
+		s := []string{"test"}
+		c.String(http.StatusOK, s[100])
+	})
 
 	r.Run(":8080")
 }
