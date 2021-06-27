@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ijunyu/gee/consistenthash"
+	"github.com/ijunyu/gee/cache/consistenthash"
 )
 
 const (
