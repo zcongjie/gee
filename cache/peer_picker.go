@@ -1,7 +1,9 @@
 package cache
 
+import "github.com/ijunyu/gee/cache/cachepb"
+
 type PeerGetter interface {
-	Get(group string, key string) ([]byte, error)
+	Get(in *cachepb.Request, out *cachepb.Response) error
 }
 
 type PeerPicker interface {

@@ -5,6 +5,7 @@ import (
 	"log"
 	"sync"
 
+	"github.com/ijunyu/gee/cache/cachepb"
 	"github.com/ijunyu/gee/cache/singleflight"
 )
 
@@ -108,10 +109,15 @@ func (g *Group) RegisterPeers(peers PeerPicker) {
 }
 
 func (g *Group) getFromPeer(peer PeerGetter, key string) (ByteView, error) {
-	bytes, err := peer.Get(g.name, key)
+	req := &cachepb.Request{
+		Group: g.name,
+		Key:   key,
+	}
+	res := &cachepb.Response{}
+	err := peer.Get(req, res)
 	if err != nil {
 		return ByteView{}, err
 	}
 
-	return ByteView{b: bytes}, nil
+	return ByteView{b: res.Value}, nil
 }
